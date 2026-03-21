@@ -161,7 +161,7 @@ Add a `needs_review` column as the last column in the output.
 
 ---
 
-## Output Format
+## Output Columns
 
 **Default output columns:**
 ```
@@ -173,9 +173,8 @@ Name, Street, City_State_Zip, Phone, SMS, needs_review
 Name, Street, City, State, Zip, Phone, SMS, needs_review
 ```
 
-- Output as UTF-8 CSV
+- Output as UTF-8 (CSV or Excel depending on user request — see Output Format section above)
 - Preserve all original rows (do not drop rows, even if fully empty)
-- Filename: `<original_name>_cleaned.csv` in the same directory as the input
 
 ---
 
