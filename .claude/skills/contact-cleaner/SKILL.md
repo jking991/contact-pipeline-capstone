@@ -147,7 +147,40 @@ Output is saved to the same directory as the input file.
 - If address is entirely missing or blank: flag → `needs_review = yes`
 - Do not attempt to geocode or validate addresses — format only
 - If splitting and city/state/zip cannot be parsed, keep combined in `City_State_Zip` and flag
-- If an address looks ambiguous (missing street number, unrecognisable format, or very short): flag → `needs_review = yes` and set `address_ambiguous = yes` — this signals the WebSearch sub-agent to attempt validation on that row
+- If an address looks ambiguous (missing street number, unrecognisable format, or very short): flag → `needs_review = yes` and set `address_ambiguous = yes` — this triggers address validation on that row
+
+**Address validation (always on — runs after formatting on all flagged rows):**
+
+Detect country from address content, then route to the appropriate API:
+
+| Address type | API | Cost | Notes |
+|---|---|---|---|
+| Canadian | Nominatim (OpenStreetMap) | Free, no signup | Rate limit: 1 req/sec |
+| US | USPS Address Validation API | Free, free registration at usps.com | No rate limit |
+| Unknown / fallback | Nominatim | Free, no signup | |
+
+**Nominatim call (Canadian + fallback):**
+```python
+import time, requests
+headers = {"User-Agent": "contact-pipeline-capstone/1.0"}
+url = f"https://nominatim.openstreetmap.org/search?q={address}&format=json&addressdetails=1&limit=1"
+response = requests.get(url, headers=headers)
+time.sleep(1)  # respect 1 req/sec rate limit
+```
+
+**USPS call (US addresses):**
+```python
+import os, requests
+# Requires free USPS Web Tools API key — register at usps.com (no credit card)
+usps_key = os.environ.get("USPS_API_KEY", "")
+```
+
+**Routing logic:**
+- Canadian province or postal code pattern (e.g. `ON`, `BC`, `M5V 3A8`) → Nominatim
+- US state or ZIP code pattern → USPS if `USPS_API_KEY` set, else Nominatim
+- Cannot determine country → Nominatim
+
+If validation returns a corrected address, replace the original and clear `address_ambiguous`. If validation fails or returns no result, keep original and leave `needs_review = yes`.
 
 ---
 
