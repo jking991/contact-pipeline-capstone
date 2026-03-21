@@ -1,6 +1,8 @@
 # Contact Audit Skill
 
-Analyze a contact CSV file and produce a summary report of data quality issues. Do not clean or modify the file — audit only.
+Analyze a contact file and produce a summary report of data quality issues. Do not clean or modify the file — audit only.
+
+Supported input formats: CSV, Excel (.xlsx/.xls), Word (.docx), PDF (.pdf)
 
 ---
 
@@ -8,19 +10,49 @@ Analyze a contact CSV file and produce a summary report of data quality issues. 
 
 | Tool | Permitted Usage |
 |---|---|
-| `Read` | Read the input CSV file |
+| `Read` | Read the input file (CSV, Excel, Word, PDF) |
 | `Bash` | Python scripts only — `python <script.py>` or inline `python -c "..."` |
 
 **Bash restriction:** Only Python execution is permitted. Do not run arbitrary shell commands.
 
 ---
 
+## Input Format Detection
+
+Detect the file format from the extension and load accordingly:
+
+| Extension | Method |
+|---|---|
+| `.csv` | `pandas.read_csv()` |
+| `.xlsx` / `.xls` | `pandas.read_excel()` — first sheet only unless user specifies |
+| `.docx` | `python-docx`: extract first table found in the document |
+| `.pdf` | `pdfplumber`: extract first table found across all pages |
+
+**Install required libraries if not present:**
+```python
+# For Word files
+import subprocess; subprocess.run(["pip", "install", "python-docx", "-q"])
+
+# For PDF files
+import subprocess; subprocess.run(["pip", "install", "pdfplumber", "-q"])
+```
+
+**Word/PDF parsing notes:**
+- Extract the first table found in the document
+- Use the first row as column headers
+- If no table is found, attempt to parse line-by-line (one contact per line, comma or tab separated)
+- If the file cannot be parsed into rows and columns, report: `"Could not extract tabular data from <filename>. Ensure the file contains a table or structured list."`
+
+---
+
 ## Workflow
 
-1. **Read** the input file to inspect raw content and identify columns
-2. Run a Python audit script to analyze all five categories below
-3. Print the formatted summary report to the console
-4. End with a one-line recommendation
+1. **Detect** the file format from the extension
+2. **Load** the file using the appropriate method above
+3. **Identify** name, phone, and address columns (ask if ambiguous)
+4. Run a Python audit script to analyze all five categories below
+5. Print the formatted summary report to the console
+6. End with a one-line recommendation
 
 Do not write any output files. Do not modify the input file.
 

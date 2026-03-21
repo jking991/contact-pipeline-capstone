@@ -1,6 +1,8 @@
 # Contact Cleaner Skill
 
-Clean and standardize contact data from CSV or Excel files. Apply all formatting rules below, add a `needs_review` flag, and output a clean CSV.
+Clean and standardize contact data from CSV, Excel, Word, or PDF files. Apply all formatting rules below, add a `needs_review` flag, and output a clean file.
+
+**Default output: CSV.** If the user says "output as Excel" or "save as Excel", output `.xlsx` instead.
 
 ---
 
@@ -8,21 +10,61 @@ Clean and standardize contact data from CSV or Excel files. Apply all formatting
 
 | Tool | Permitted Usage |
 |---|---|
-| `Read` | Read input CSV/Excel files and inspect raw data |
-| `Write` | Write the cleaned output CSV |
+| `Read` | Read input files (CSV, Excel, Word, PDF) |
+| `Write` | Write the cleaned output file |
 | `Bash` | Python scripts only — `python <script.py>` or inline `python -c "..."` |
 
 **Bash restriction:** Only Python execution is permitted. Do not run arbitrary shell commands.
 
 ---
 
+## Input Format Detection
+
+Detect the file format from the extension and load accordingly:
+
+| Extension | Method |
+|---|---|
+| `.csv` | `pandas.read_csv()` |
+| `.xlsx` / `.xls` | `pandas.read_excel()` — first sheet only unless user specifies |
+| `.docx` | `python-docx`: extract first table found in the document |
+| `.pdf` | `pdfplumber`: extract first table found across all pages |
+
+**Install required libraries if not present:**
+```python
+import subprocess
+subprocess.run(["pip", "install", "python-docx", "-q"])  # Word
+subprocess.run(["pip", "install", "pdfplumber", "-q"])   # PDF
+subprocess.run(["pip", "install", "openpyxl", "-q"])     # Excel output
+```
+
+**Word/PDF parsing notes:**
+- Extract the first table found in the document
+- Use the first row as column headers
+- If no table is found, attempt to parse line-by-line (one contact per line, comma or tab separated)
+- If the file cannot be parsed into rows and columns, stop and report: `"Could not extract tabular data from <filename>. Ensure the file contains a table or structured list."`
+
+---
+
+## Output Format
+
+| User says | Output | Filename |
+|---|---|---|
+| *(nothing / default)* | CSV | `<name>_cleaned.csv` |
+| "output as Excel" / "save as Excel" / "Excel output" | Excel (.xlsx) | `<name>_cleaned.xlsx` |
+
+Output is saved to the same directory as the input file.
+
+---
+
 ## Workflow
 
-1. **Read** the input file and inspect the first 5 rows to identify column names
-2. Ask the user to confirm column mapping if ambiguous (name, phone, address columns)
-3. Apply all formatting rules below — **do not ask about address format**; always use Street + City_State_Zip unless the user explicitly included "split addresses" in their prompt
-4. **Write** the cleaned CSV to the same directory as the input, with `_cleaned` appended to the filename (e.g. `contacts_cleaned.csv`)
-5. Report a summary: total rows, rows flagged for review, and what was fixed
+1. **Detect** the file format from the extension
+2. **Load** the file using the appropriate method above; install libraries if needed
+3. Inspect the first 5 rows to identify column names
+4. Ask the user to confirm column mapping if ambiguous (name, phone, address columns)
+5. Apply all formatting rules below — **do not ask about address format**; always use Street + City_State_Zip unless the user explicitly included "split addresses" in their prompt
+6. **Write** the cleaned file in the requested output format
+7. Report a summary: total rows, rows flagged for review, and what was fixed
 
 ---
 
