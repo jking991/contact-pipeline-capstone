@@ -147,6 +147,7 @@ Output is saved to the same directory as the input file.
 - If address is entirely missing or blank: flag → `needs_review = yes`
 - Do not attempt to geocode or validate addresses — format only
 - If splitting and city/state/zip cannot be parsed, keep combined in `City_State_Zip` and flag
+- If an address looks ambiguous (missing street number, unrecognisable format, or very short): flag → `needs_review = yes` and set `address_ambiguous = yes` — this signals the WebSearch sub-agent to attempt validation on that row
 
 ---
 
