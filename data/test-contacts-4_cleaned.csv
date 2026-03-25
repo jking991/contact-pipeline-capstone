@@ -1,0 +1,6 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+Frank Castle,,"New York, NY 10001",12125550001,2125550001,yes
+Greta Hahn,Apt 4B,"New York, NY 10002",12125550002,2125550002,yes
+Henry Park,350 5th Ave,"New York, NY 10118",12125550003,2125550003,no
+Isla Wong,,,12125550004,2125550004,yes
+James Ford,1 Times Square,"New York, NY 10036",12125550005,2125550005,no

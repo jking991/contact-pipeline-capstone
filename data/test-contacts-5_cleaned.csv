@@ -1,0 +1,6 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+,,,,,yes
+Kate Miller,500 Pike St,"Seattle, WA 98101",12065550033,2065550033,no
+Diana Ross,600 Pine St,"Seattle, WA 98101",12065550044,2065550044,no
+Mike Chen,700 Union St,"Seattle, WA 98101",12065550055,2065550055,no
+Sarah Jones,800 Stewart St,"Seattle, WA 98101",12065550066,2065550066,no

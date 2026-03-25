@@ -1,0 +1,6 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+Alice Brown,45 River Rd,"Austin, TX 78701",,,yes
+Carlos Mendez,200 Congress Ave,"Austin, TX 78701",512-555-ABCD,,yes
+Priya Patel,300 W 6th St,"Austin, TX 78701",15125550011,5125550011,no
+Derek Holt,410 Colorado St,"Austin, TX 78701",15125557722,5125557722,no
+Nina Russo,99 Lavaca St,"Austin, TX 78701",123,,yes

@@ -1,0 +1,6 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+John Smith,123 Main St,"Springfield, IL 62701",15551234567,5551234567,no
+Jane Doe,456 Oak Ave,"Chicago, IL 60601",15559876543,5559876543,no
+Bob Johnson,789 Pine Rd,"Naperville, IL 60540",18005550199,8005550199,no
+Williams Sarah,,"Aurora, IL 60505",5551234,,yes
+,321 Elm St,"Joliet, IL 60432",13125558888,3125558888,yes

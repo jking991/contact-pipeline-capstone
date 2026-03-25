@@ -1,0 +1,74 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+Jennifer Walsh,200 Bay St,"Toronto, ON M5J 2J1",14165550101,4165550101,no
+Miguel Torres,100 King St W,"Toronto, ON M5X 1A9",14165550142,4165550142,no
+Robert Kim,66 Wellington St W,"Toronto, ON M5K 1A1",14165550183,4165550183,no
+Amanda Price,145 King St W,"Toronto, ON M5H 1J8",14165550224,4165550224,no
+Priya Patel,181 Bay St,"Toronto, ON M5J 2T3",14165550265,4165550265,no
+David Nguyen,20 Queen St W,"Toronto, ON M5H 3R3",14165550306,4165550306,no
+Lisa Chen,130 Adelaide St W,"Toronto, ON M5H 3P5",14165550347,4165550347,no
+James Okafor,77 King St W,"Toronto, ON M5K 1G8",14165550388,4165550388,no
+Sarah Martinez,200 Front St W,"Toronto, ON M5V 3K2",14165550429,4165550429,no
+Kevin Brooks,1 York St,"Toronto, ON M5J 0B6",14165550470,4165550470,no
+Ashley Reed,25 York St,"Toronto, ON M5J 2V5",14165550511,4165550511,no
+Tom Wilson,40 King St W,"Toronto, ON M5H 3Y2",14165550552,4165550552,no
+Brittany Hall,55 University Ave,"Toronto, ON M5J 2H7",14165550593,4165550593,no
+Yuki Nakamura,250 Yonge St,"Toronto, ON M5B 2L7",41655506,,yes
+Carlos Rivera,18 King St E,"Toronto, ON M5C 1C4",14165550675,4165550675,no
+Stephanie Fox,1 First Canadian Place,"Toronto, ON M5X 1A2",14165550716,4165550716,no
+Marcus Grant,141 Adelaide St W,"Toronto, ON M5H 3L5",14165550757,4165550757,no
+Diana Ross,100 Simcoe St,,14165550839,4165550839,yes
+Paul Scott,200 King St W,"Toronto, ON M5H 3T4",555-0880,,yes
+Michael Hayes,1055 W Georgia St,"Vancouver, BC V6E 3P3",16045550101,6045550101,no
+Tara Washington,555 W Hastings St,"Vancouver, BC V6B 4N6",16045550142,6045550142,no
+Jessica Liu,1090 W Georgia St,"Vancouver, BC V6E 3V7",16045550183,6045550183,no
+Brandon Foster,650 W Georgia St,"Vancouver, BC V6B 4N8",16045550224,6045550224,no
+Sophie Klein,400 Burrard St,"Vancouver, BC V6C 3A6",16045550265,6045550265,no
+Anthony Romano,1166 Alberni St,"Vancouver, BC V6E 3Z3",16045550306,6045550306,no
+Karen Powell,750 W Pender St,"Vancouver, BC V6C 2T7",16045550347,6045550347,no
+Omar Ibrahim,700 W Georgia St,"Vancouver, BC V7Y 1G5",16045550388,6045550388,no
+Madison Turner,200 Granville St,"Vancouver, BC V6C 1S4",16045550429,6045550429,no
+Eric Hoffman,1075 W Georgia St,"Vancouver, BC V6E 3C9",16045550470,6045550470,no
+Lucia Santos,1000 De La Gauchetiere W,"Montreal, QC H3B 4W5",15145550101,5145550101,no
+Tyler Morgan,1250 Rene-Levesque Blvd W,"Montreal, QC H3B 4W8",15145550142,5145550142,no
+Alicia Ford,800 Rene-Levesque Blvd W,"Montreal, QC H3B 1X9",15145550183,5145550183,no
+Ken Yamamoto,600 De Maisonneuve Blvd W,"Montreal, QC H3A 3J2",15145550224,5145550224,no
+Brittney Cox,1500 University St,"Montreal, QC H3A 3S8",15145550265,5145550265,no
+Darnell White,2 Complexe Desjardins,"Montreal, QC H5B 1E5",15145550306,5145550306,no
+Linda Nguyen,1 Place Ville Marie,"Montreal, QC H3B 2B5",15145550347,5145550347,no
+Patrick O'Brien,630 Rene-Levesque Blvd W,"Montreal, QC H3B 1S6",15145550388,5145550388,no
+Grace Park,700 De La Gauchetiere W,"Montreal, QC H5C 1B7",15145550429,5145550429,no
+Ramon Diaz,1 Westmount Square,"Montreal, QC H3Z 2P9",15145550470,5145550470,no
+Sarah Cooper,225 6 Ave SW,"Calgary, AB T2P 1N2",14035550101,4035550101,no
+Peter Nguyen,350 7 Ave SW,"Calgary, AB T2P 3N9",14035550142,4035550142,no
+Claire Murphy,888 3 St SW,"Calgary, AB T2P 5C5",14035550183,4035550183,no
+Dominic Reyes,400 3 Ave SW,"Calgary, AB T2P 4H2",14035550224,4035550224,no
+Bridget Walsh,112 4 Ave SW,"Calgary, AB T2P 0H3",14035550265,4035550265,no
+Joel Hernandez,520 3 Ave SW,"Calgary, AB T2P 0R3",14035550306,4035550306,no
+Tanya Williams,700 2 St SW,"Calgary, AB T2P 2W1",14035550347,4035550347,no
+Andrew Kim,333 7 Ave SW,"Calgary, AB T2P 2Z1",14035550388,4035550388,no
+Nina Patel,150 6 Ave SW,"Calgary, AB T2P 3Y7",14035550429,4035550429,no
+Sean Mccarthy,240 4 Ave SW,"Calgary, AB T2P 4H7",14035550470,4035550470,no
+Michelle Robinson,340 Albert St,"Ottawa, ON K1R 7Y6",16135550101,6135550101,no
+Eric Larson,275 Slater St,"Ottawa, ON K1P 5H9",16135550142,6135550142,no
+Victoria James,151 Slater St,"Ottawa, ON K1P 5H3",16135550183,6135550183,no
+Raymond Clark,130 Albert St,"Ottawa, ON K1P 5G4",16135550224,6135550224,no
+Kate Hoffman,350 Sparks St,"Ottawa, ON K1R 7S8",16135550265,6135550265,no
+Alex Thornton,200 Elgin St,"Ottawa, ON K2P 1L5",16135550306,6135550306,no
+Denise Carter,100 Queen St,"Ottawa, ON K1P 1J9",16135550347,6135550347,no
+Brian Sullivan,222 Queen St,"Ottawa, ON K1P 5V9",16135550388,6135550388,no
+Heather Watson,90 Sparks St,"Ottawa, ON K1P 5T8",16135550429,6135550429,no
+Marcus James,45 O'Connor St,"Ottawa, ON K1P 1A4",16135550470,6135550470,no
+Olivia Bennett,350 Fifth Ave,"New York, NY 10118",12125550101,2125550101,no
+James Washington,1 World Trade Ctr,"New York, NY 10007",12125550142,2125550142,no
+Chloe Anderson,30 Rockefeller Plz,"New York, NY 10112",12125550183,2125550183,no
+Troy Jenkins,11 Times Square,"New York, NY 10036",12125550224,2125550224,no
+Monique Harris,233 S Wacker Dr,"Chicago, IL 60606",13125550265,3125550265,no
+Drew Coleman,200 W Madison St,"Chicago, IL 60606",13125550306,3125550306,no
+Jasmine Price,633 W 5th St,"Los Angeles, CA 90071",12135550347,2135550347,no
+Scott Campbell,777 S Figueroa St,"Los Angeles, CA 90017",12135550388,2135550388,no
+Cody Turner,75 State St,"Boston, MA 02109",16175550429,6175550429,no
+Alexis Reed,100 Federal St,"Boston, MA 02110",16175550470,6175550470,no
+Nathan Price,1201 3rd Ave,"Seattle, WA 98101",12065550511,2065550511,no
+Maria Flores,800 5th Ave,"Seattle, WA 98104",12065550552,2065550552,no
+Brooke Harrison,191 Peachtree St NE,"Atlanta, GA 30303",14045550593,4045550593,no
+Tyrone Bell,55 Ivan Allen Jr Blvd,"Atlanta, GA 30308",14045550634,4045550634,no
