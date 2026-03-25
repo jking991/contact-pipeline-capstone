@@ -51,8 +51,28 @@ subprocess.run(["pip", "install", "openpyxl", "-q"])     # Excel output
 |---|---|---|
 | *(nothing / default)* | CSV | `<name>_cleaned.csv` |
 | "output as Excel" / "save as Excel" / "Excel output" | Excel (.xlsx) | `<name>_cleaned.xlsx` |
+| "output as Word" / "save as Word" / "Word output" | Word (.docx) | `<name>_cleaned.docx` |
+| "output as text" / "save as txt" / "text output" | Plain text (.txt) | `<name>_cleaned.txt` |
+| "output as JSON" / "save as JSON" / "JSON output" | JSON (.json) | `<name>_cleaned.json` |
 
 Output is saved to the same directory as the input file.
+
+**Word output notes:**
+- Write a single table to the `.docx` file using `python-docx` (already installed for Word input)
+- First row = column headers (bold)
+- One contact per subsequent row
+- Use `Document()`, add a table with `doc.add_table(rows=1+len(df), cols=len(df.columns))`, populate cells, save
+
+**Text output notes:**
+- Tab-delimited plain text (`.txt`)
+- First line = column headers separated by tabs
+- One contact per subsequent line, fields separated by tabs
+- Use `df.to_csv(path, sep='\t', index=False)` — simple and human-readable
+
+**JSON output notes:**
+- Array of objects, one object per contact
+- Use `df.to_json(path, orient='records', indent=2, force_ascii=False)`
+- `force_ascii=False` preserves accented characters (e.g. Québec)
 
 ---
 
@@ -156,7 +176,7 @@ Detect country from address content, then route to the appropriate API:
 | Address type | API | Cost | Notes |
 |---|---|---|---|
 | Canadian | Nominatim (OpenStreetMap) | Free, no signup | Rate limit: 1 req/sec |
-| US | USPS Address Validation API | Free, free registration at usps.com | No rate limit |
+| US | Nominatim (OpenStreetMap) | Free, no signup | Rate limit: 1 req/sec |
 | Unknown / fallback | Nominatim | Free, no signup | |
 
 **Nominatim call (Canadian + fallback):**
@@ -168,16 +188,9 @@ response = requests.get(url, headers=headers)
 time.sleep(1)  # respect 1 req/sec rate limit
 ```
 
-**USPS call (US addresses):**
-```python
-import os, requests
-# Requires free USPS Web Tools API key — register at usps.com (no credit card)
-usps_key = os.environ.get("USPS_API_KEY", "")
-```
-
 **Routing logic:**
 - Canadian province or postal code pattern (e.g. `ON`, `BC`, `M5V 3A8`) → Nominatim
-- US state or ZIP code pattern → USPS if `USPS_API_KEY` set, else Nominatim
+- US state or ZIP code pattern → Nominatim
 - Cannot determine country → Nominatim
 
 If validation returns a corrected address, replace the original and clear `address_ambiguous`. If validation fails or returns no result, keep original and leave `needs_review = yes`.
@@ -207,7 +220,7 @@ Name, Street, City_State_Zip, Phone, SMS, needs_review
 Name, Street, City, State, Zip, Phone, SMS, needs_review
 ```
 
-- Output as UTF-8 (CSV or Excel depending on user request — see Output Format section above)
+- Output as UTF-8 (CSV, Excel, Word, text, or JSON depending on user request — see Output Format section above)
 - Preserve all original rows (do not drop rows, even if fully empty)
 
 ---
