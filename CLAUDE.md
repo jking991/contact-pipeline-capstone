@@ -18,6 +18,27 @@ A headless AI agent pipeline that ingests raw contact data (CSV/Excel), audits i
 - `/contact-cleaner` — cleans names, phones, addresses. Run after audit.
 - `/database-profiler` — profiles SQLite databases
 - `/data-analyst` — SQL-based data analysis loop
+- `/brainstorming` — design new features or skill improvements before building. Use before writing evals or mutating a skill.
+
+## Improving Skills (Autoresearch Workflow)
+
+Before modifying any skill, use this sequence:
+
+1. `/brainstorming` — design what the improved skill should look like
+2. Write `evals.md` in the skill directory (3-5 binary criteria)
+3. Run `python scripts/run-brainstorming-evals.py` (or equivalent) to score baseline
+4. Mutate the skill — one change at a time
+5. Re-run evals and compare scores
+6. Record result in `references/research-log.md`
+
+Eval runners live in `scripts/`. Each skill with evals has:
+```
+.claude/skills/<skill-name>/
+├── SKILL.md
+├── evals.md
+└── references/
+    └── research-log.md
+```
 
 ## Key Preferences
 
