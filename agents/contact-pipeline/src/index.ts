@@ -200,7 +200,7 @@ On the final line, print exactly: FLAGGED_ROWS: X  (replace X with the number of
 
   // ── Stage 3: Report ──────────────────────────────────────────────────────
   const reportPath = path.join(OUTPUT_DIR, `${stem}-report.md`);
-  const reportMd = generateReport(auditResult, cleanResult, outputCsv, filename, new Date().toISOString());
+  const reportMd = generateReport(auditResult, cleanResult, absInput, outputCsv, filename, new Date().toISOString());
   fs.writeFileSync(reportPath, reportMd);
   console.log(`\n${"─".repeat(52)}`);
   console.log(`▶ Stage 3 — Report`);
@@ -249,6 +249,7 @@ function parseCsvLine(line: string): string[] {
 function generateReport(
   auditResult: string,
   cleanResult: string,
+  inputCsvPath: string,
   cleanedCsvPath: string,
   filename: string,
   runTimestamp: string
@@ -264,18 +265,37 @@ function generateReport(
   const allLower     = auditNum("all lowercase");
   const phoneInvalid = auditNum("Invalid");
   const phoneMissing = auditNum("Missing");
-  const nameIssues   = lastFirst + allCaps + allLower;
   const phoneIssues  = auditNum("Dashes") + auditNum("Brackets") + auditNum("Dots") +
                        auditNum("Spaces only") + auditNum("\\+1 prefix");
 
-  // ── Parse clean stats ──────────────────────────────────────────────────────
-  const cleanNum = (label: string) => {
-    const m = cleanResult.match(new RegExp(`${label}[:\\s]+(\\d+)`, "i"));
-    return m ? parseInt(m[1]) : 0;
-  };
-  const namesFixed   = cleanNum("Names fixed");
-  const phonesFixed  = cleanNum("Phones reformatted");
-  const flaggedRows  = cleanNum("FLAGGED_ROWS");
+  // ── Compute actual changes by diffing input vs output CSVs ────────────────
+  let namesFixed = 0;
+  let phonesFixed = 0;
+  try {
+    const inputLines  = fs.readFileSync(inputCsvPath,  "utf-8").trim().split(/\r?\n/);
+    const outputLines = fs.readFileSync(cleanedCsvPath, "utf-8").trim().split(/\r?\n/);
+    const inHeaders  = parseCsvLine(inputLines[0]);
+    const outHeaders = parseCsvLine(outputLines[0]);
+    const inNameIdx  = inHeaders.indexOf("Name");
+    const inPhoneIdx = inHeaders.indexOf("Phone");
+    const outNameIdx  = outHeaders.indexOf("Name");
+    const outPhoneIdx = outHeaders.indexOf("Phone");
+    const rowCount = Math.min(inputLines.length, outputLines.length) - 1;
+    for (let i = 1; i <= rowCount; i++) {
+      const inCols  = parseCsvLine(inputLines[i]  ?? "");
+      const outCols = parseCsvLine(outputLines[i] ?? "");
+      const inName  = inCols[inNameIdx]?.trim()  ?? "";
+      const outName = outCols[outNameIdx]?.trim() ?? "";
+      const inPhone  = inCols[inPhoneIdx]?.trim()  ?? "";
+      const outPhone = outCols[outPhoneIdx]?.trim() ?? "";
+      if (inName  && outName  && inName  !== outName)  namesFixed++;
+      if (inPhone && outPhone && inPhone !== outPhone) phonesFixed++;
+    }
+  } catch { /* if either file missing, leave counts at 0 */ }
+
+  // ── Parse flagged row count from clean result ──────────────────────────────
+  const flaggedMatch = cleanResult.match(/FLAGGED_ROWS:\s*(\d+)/i);
+  const flaggedRows  = flaggedMatch ? parseInt(flaggedMatch[1]) : 0;
 
   // ── Parse cleaned CSV for flagged rows ────────────────────────────────────
   const csvContent = fs.readFileSync(cleanedCsvPath, "utf-8");
