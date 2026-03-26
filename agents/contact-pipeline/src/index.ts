@@ -59,18 +59,27 @@ async function runStage(
 
 // ── Pipeline ───────────────────────────────────────────────────────────────────
 
-async function runPipeline(inputFile: string): Promise<void> {
+const FORMAT_EXTENSIONS: Record<string, string> = {
+  csv:   "csv",
+  excel: "xlsx",
+  word:  "docx",
+  text:  "txt",
+  json:  "json",
+};
+
+async function runPipeline(inputFile: string, format: string = "csv"): Promise<void> {
   const absInput = path.resolve(inputFile);
   const filename = path.basename(absInput);
   const stem = filename.replace(/\.[^.]+$/, "");
-  const outputCsv = path.join(path.dirname(absInput), `${stem}_cleaned.csv`);
+  const ext = FORMAT_EXTENSIONS[format] ?? "csv";
+  const outputFile = path.join(path.dirname(absInput), `${stem}_cleaned.${ext}`);
   const auditReportPath = path.join(OUTPUT_DIR, `${stem}-audit.md`);
 
   console.log("╔════════════════════════════════════════════════════╗");
   console.log("║        Contact Pipeline — Headless Runner          ║");
   console.log("╚════════════════════════════════════════════════════╝");
   console.log(`\nInput  : ${absInput}`);
-  console.log(`Output : ${outputCsv}`);
+  console.log(`Output : ${outputFile} (${format})`);
   console.log(`Audit  : ${auditReportPath}`);
 
   if (!fs.existsSync(absInput)) {
@@ -180,7 +189,12 @@ NEEDS_REVIEW COLUMN:
 
 Output columns: Name, Street, City_State_Zip, Phone, SMS, needs_review
 
-Write the cleaned data to: ${outputCsv}
+Write the cleaned data to: ${outputFile}
+Output format: ${format === "excel" ? "Excel (.xlsx) — use openpyxl: df.to_excel(path, index=False)" :
+               format === "word"  ? "Word (.docx) — use python-docx: create a Document, add a table, one row per contact, first row bold headers" :
+               format === "text"  ? "Tab-delimited text (.txt) — use df.to_csv(path, sep='\\t', index=False)" :
+               format === "json"  ? "JSON (.json) — use df.to_json(path, orient='records', indent=2, force_ascii=False)" :
+               "CSV (.csv) — use df.to_csv(path, index=False)"}
 
 Then print this summary (use these exact labels):
 Cleaning complete.
@@ -188,7 +202,7 @@ Cleaning complete.
 - Names fixed: X
 - Phones reformatted: X
 - Invalid/missing fields flagged: X rows marked needs_review = yes
-- Output saved to: ${outputCsv}
+- Output saved to: ${outputFile}
 
 On the final line, print exactly: FLAGGED_ROWS: X  (replace X with the number of rows where needs_review = yes)`;
 
@@ -200,7 +214,7 @@ On the final line, print exactly: FLAGGED_ROWS: X  (replace X with the number of
 
   // ── Stage 3: Report ──────────────────────────────────────────────────────
   const reportPath = path.join(OUTPUT_DIR, `${stem}-report.md`);
-  const reportMd = generateReport(auditResult, cleanResult, absInput, outputCsv, filename, new Date().toISOString());
+  const reportMd = generateReport(auditResult, cleanResult, absInput, outputFile, filename, new Date().toISOString());
   fs.writeFileSync(reportPath, reportMd);
   console.log(`\n${"─".repeat(52)}`);
   console.log(`▶ Stage 3 — Report`);
@@ -222,7 +236,7 @@ On the final line, print exactly: FLAGGED_ROWS: X  (replace X with the number of
   console.log("  PIPELINE COMPLETE");
   console.log(`${"═".repeat(52)}`);
   console.log(`  Input file    : ${filename}`);
-  console.log(`  Output file   : ${stem}_cleaned.csv`);
+  console.log(`  Output file   : ${stem}_cleaned.${ext} (${format})`);
   console.log(`  Audit report  : output/${stem}-audit.md`);
   console.log(`  Pipeline report: output/${stem}-report.md`);
   console.log(`  Rows processed: ${totalRows}`);
@@ -365,15 +379,24 @@ function generateReport(
 // ── Main ───────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const inputFile = process.argv[2];
+  const args = process.argv.slice(2);
+  const inputFile = args.find(a => !a.startsWith("--"));
+  const formatArg = args.find(a => a.startsWith("--format="))?.split("=")[1]
+                 ?? (args.indexOf("--format") !== -1 ? args[args.indexOf("--format") + 1] : undefined);
+  const format = formatArg && FORMAT_EXTENSIONS[formatArg] ? formatArg : "csv";
 
   if (!inputFile) {
-    console.error("Usage: ts-node src/index.ts <path-to-contact-file>");
-    console.error("  Example: ts-node src/index.ts data/test-contacts.csv");
+    console.error("Usage: ts-node src/index.ts <path-to-contact-file> [--format csv|excel|word|text|json]");
+    console.error("  Example: ts-node src/index.ts data/contacts.csv --format excel");
     process.exit(1);
   }
 
-  await runPipeline(inputFile);
+  if (formatArg && !FORMAT_EXTENSIONS[formatArg]) {
+    console.error(`✗ Unknown format: "${formatArg}". Valid options: csv, excel, word, text, json`);
+    process.exit(1);
+  }
+
+  await runPipeline(inputFile, format);
 }
 
 main().catch((err) => {
