@@ -60,10 +60,10 @@ automatically, and hands back the file in whatever format you need."
 - **What was challenging:** Getting reliable metrics out of the pipeline — the model's
   summary text wasn't consistent enough to parse with regex, so I ended up diffing the
   actual input and output CSV files in TypeScript to count real field changes.
-- **What I'd do differently:** The cleaner now outputs CSV, Excel, Word, text, and JSON —
-  but the SDK runner always outputs CSV. A `--format` flag would let you specify the
-  output format from the command line, so the whole pipeline is truly format-flexible
-  end to end.
+- **What I added during demo prep:** I realised the cleaner skill supported five output
+  formats but the SDK runner always output CSV. So I added a `--format` flag —
+  `npm start -- file.csv --format excel` — and now the whole pipeline is format-flexible
+  end to end. That's actually a good example of how building the demo made the project better.
 
 ---
 
