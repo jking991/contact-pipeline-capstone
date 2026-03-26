@@ -36,16 +36,19 @@ automatically, and hands back the file in whatever format you need."
 
 ## Live Demo (2.5 min)
 
-- **I'll show:** Running the SDK pipeline on `demo-contacts.csv`
-- **Sample input:** 73-row CSV — ALL CAPS names, Last/First reversed, 6 different phone
-  formats, missing fields, mix of Canadian and US contacts
-- **Expected output:**
-  - `demo-contacts_cleaned.csv` — standardised, flagged rows marked `needs_review = yes`
-  - `output/demo-contacts-audit.md` — pre-clean quality report
-  - `output/demo-contacts-report.md` — summary of what was found and fixed, with a
-    table of rows requiring manual review
-- **Backup if live fails:** Pre-run output files are already saved in `output/` —
-  walk through the audit report and pipeline report to show the results
+- **I'll show:** Running the SDK pipeline on `demo-contacts-short.csv` (10 rows, ~2.5 min runtime)
+- **Step 1 — Show input first (30 sec):** Open `demo-contacts-short.csv` before running.
+  Walk through the dirty data visually — ALL CAPS names, Last/First reversed, 6 phone
+  formats, missing fields. Let the audience see the problem before the fix.
+- **Step 2 — Run the command (5 sec):** `npm start -- ../../data/demo-contacts-short.csv`
+- **Step 3 — Narrate while it runs:**
+  - Stage 1: "Auditing with Haiku — pattern matching, counting every issue before anything changes"
+  - Stage 2: "Cleaning with Sonnet — reversing names, standardising phones, flagging what it can't fix"
+  - Stage 3: "Report — pure TypeScript, no extra API call, instant"
+- **Step 4 — Show the report (30 sec):** Open `output/demo-contacts-short-report.md` —
+  10 rows, 8 names fixed, 8 phones reformatted, 4 flagged with a table showing each issue
+- **Backup if live fails:** Pre-run output files already saved in `output/` —
+  walk through `demo-contacts-short-report.md` and the cleaned CSV directly
 
 ---
 
@@ -67,8 +70,8 @@ automatically, and hands back the file in whatever format you need."
 ## Demo Day Checklist
 
 - [ ] Terminal open in `contact-pipeline-capstone/agents/contact-pipeline/`
-- [ ] `data/demo-contacts.csv` ready
-- [ ] Run command ready: `npm start -- ../../data/demo-contacts.csv`
-- [ ] Pre-run output files in `output/` as backup
+- [ ] `data/demo-contacts-short.csv` open in a second window (to show dirty data first)
+- [ ] Run command ready: `npm start -- ../../data/demo-contacts-short.csv`
+- [ ] Pre-run output files in `output/` as backup (`demo-contacts-short-report.md`)
 - [ ] Notifications disabled
 - [ ] Screen sharing tested
