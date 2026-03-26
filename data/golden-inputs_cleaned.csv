@@ -1,0 +1,11 @@
+Name,Street,City_State_Zip,Phone,SMS,needs_review
+Jennifer Walsh,200 Bay St,"Toronto, ON M5J 2J1",14165550101,4165550101,no
+Miguel Torres,100 King St W,"Toronto, ON M5X 1A9",14165550142,4165550142,no
+Robert Kim,66 Wellington St W,"Toronto, ON M5K 1A1",14165550183,4165550183,no
+Amanda Price,145 King St W,"Toronto, ON M5H 1J8",14165550224,4165550224,no
+Priya Patel,181 Bay St,"Toronto, ON M5J 2T3",14165550265,4165550265,no
+David Nguyen,20 Queen St W,"Toronto, ON M5H 3R3",14165550306,4165550306,no
+Yuki Nakamura,250 Yonge St,"Toronto, ON M5B 2L7",41655506,,yes
+,333 Bay St,"Toronto, ON M5H 2R2",14165550798,4165550798,yes
+Diana Ross,100 Simcoe St,,14165550839,4165550839,yes
+Emily Harrison,350 Fifth Ave,"New York, NY 10118",12125550234,2125550234,no
