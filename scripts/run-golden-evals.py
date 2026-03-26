@@ -55,6 +55,16 @@ EXPECTED = [
     {"Name": "Diana Ross",      "Phone": "14165550839", "SMS": "4165550839", "needs_review": "yes"},
     # 10 — US contact, already clean 11-digit phone
     {"Name": "Emily Harrison",  "Phone": "12125550234", "SMS": "2125550234", "needs_review": "no"},
+    # 11 — Already fully clean row (should pass through unchanged)
+    {"Name": "David Chen",      "Phone": "14165550901", "SMS": "4165550901", "needs_review": "no"},
+    # 12 — Both name AND phone missing
+    {"Name": "",                "Phone": "",            "SMS": "",           "needs_review": "yes"},
+    # 13 — Apostrophe in name + Last,First reversal
+    {"Name": "Sean O'Brien",    "Phone": "14165550942", "SMS": "4165550942", "needs_review": "no"},
+    # 14 — 12-digit phone (too long → invalid)
+    {"Name": "Marcus Bell",     "Phone": "141655501234","SMS": "",           "needs_review": "yes"},
+    # 15 — Extra whitespace in name (should be collapsed + Title Cased)
+    {"Name": "John Smith",      "Phone": "14165550167", "SMS": "4165550167", "needs_review": "no"},
 ]
 
 CASE_NAMES = [
@@ -68,6 +78,11 @@ CASE_NAMES = [
     "Missing name",
     "Missing address",
     "US contact + clean 11-digit",
+    "Already fully clean row",
+    "Both name AND phone missing",
+    "Apostrophe name + Last,First",
+    "12-digit phone (too long)",
+    "Extra whitespace in name",
 ]
 
 # ── Run cleaner ────────────────────────────────────────────────────────────────
@@ -182,7 +197,7 @@ def main():
 
     print(f"\n{'=' * 60}")
     print("  Contact Cleaner — Golden Dataset Eval Runner")
-    print(f"  {len(EXPECTED)} test cases × 4 fields = {len(EXPECTED) * 4} max checks")
+    print(f"  {len(EXPECTED)} test cases × 4 fields = {len(EXPECTED) * 4} field checks")
     print(f"{'=' * 60}\n")
 
     if dry_run:

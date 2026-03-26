@@ -179,3 +179,88 @@ to verify the skill produces the expected output for known inputs.
 | 8 | Missing | valid phone cleaned | yes |
 | 9 | ALL CAPS → Title Case | valid phone cleaned | yes |
 | 10 | Last, First + ALL CAPS → First Last | already clean 11-digit | no |
+| 11 | Already clean — no change | already clean 11-digit | no |
+| 12 | Missing | missing — left blank | yes |
+| 13 | Last, First + apostrophe → First Last Title Case | brackets stripped | no |
+| 14 | ALL CAPS → Title Case | invalid (12 digits) → kept | yes |
+| 15 | Whitespace collapsed + Title Case | brackets stripped | no |
+
+---
+
+## Case 11 — Already fully clean row (no changes needed)
+
+**Input:**
+| Name | Phone | Street | City_State_Zip |
+|---|---|---|---|
+| David Chen | 14165550901 | 500 Richmond St W | Toronto, ON M5V 1Y4 |
+
+**Expected output:**
+| Name | Street | City_State_Zip | Phone | SMS | needs_review |
+|---|---|---|---|---|---|
+| David Chen | 500 Richmond St W | Toronto, ON M5V 1Y4 | 14165550901 | 4165550901 | no |
+
+**What changed:** Nothing — already Title Case, already 11-digit phone. Passes through unchanged.
+
+---
+
+## Case 12 — Both name AND phone missing
+
+**Input:**
+| Name | Phone | Street | City_State_Zip |
+|---|---|---|---|
+| *(blank)* | *(blank)* | 400 University Ave | Toronto, ON M5G 1S5 |
+
+**Expected output:**
+| Name | Street | City_State_Zip | Phone | SMS | needs_review |
+|---|---|---|---|---|---|
+| *(blank)* | 400 University Ave | Toronto, ON M5G 1S5 | *(blank)* | | yes |
+
+**What changed:** Both fields left blank, SMS empty, flagged for review
+
+---
+
+## Case 13 — Apostrophe in name + Last, First reversal
+
+**Input:**
+| Name | Phone | Street | City_State_Zip |
+|---|---|---|---|
+| O'BRIEN, SEAN | (416) 555-0942 | 10 Bay St | Toronto, ON M5J 2R8 |
+
+**Expected output:**
+| Name | Street | City_State_Zip | Phone | SMS | needs_review |
+|---|---|---|---|---|---|
+| Sean O'Brien | 10 Bay St | Toronto, ON M5J 2R8 | 14165550942 | 4165550942 | no |
+
+**What changed:** `O'BRIEN, SEAN` → reversed to `Sean O'Brien` (Python's `str.title()` correctly handles apostrophes), phone cleaned
+
+---
+
+## Case 14 — 12-digit phone (too long → invalid)
+
+**Input:**
+| Name | Phone | Street | City_State_Zip |
+|---|---|---|---|
+| MARCUS BELL | 141655501234 | 75 Front St W | Toronto, ON M5J 1E6 |
+
+**Expected output:**
+| Name | Street | City_State_Zip | Phone | SMS | needs_review |
+|---|---|---|---|---|---|
+| Marcus Bell | 75 Front St W | Toronto, ON M5J 1E6 | 141655501234 | | yes |
+
+**What changed:** Name Title Cased, phone kept as-is (12 digits — neither 10 nor 11), SMS blank, flagged
+
+---
+
+## Case 15 — Extra whitespace in name
+
+**Input:**
+| Name | Phone | Street | City_State_Zip |
+|---|---|---|---|
+| `  john   smith  ` | (416) 555-0167 | 22 Adelaide St W | Toronto, ON M5H 1L2 |
+
+**Expected output:**
+| Name | Street | City_State_Zip | Phone | SMS | needs_review |
+|---|---|---|---|---|---|
+| John Smith | 22 Adelaide St W | Toronto, ON M5H 1L2 | 14165550167 | 4165550167 | no |
+
+**What changed:** Leading/trailing whitespace stripped, internal spaces collapsed, Title Case applied, phone cleaned
